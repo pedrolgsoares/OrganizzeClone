@@ -14,7 +14,7 @@ public class MainActivity extends IntroActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // não será mais necessário pois teraá o slider setContentView(R.layout.activity_main);
+        // não será mais necessário pois teraá o slider setContentView(R.layout.activity_main)
         // definir a visbilidadde dos botões de voltar e avançar
        /*
             setButtonBackVisible(false);
