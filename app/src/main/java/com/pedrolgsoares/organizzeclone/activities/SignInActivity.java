@@ -3,6 +3,7 @@ package com.pedrolgsoares.organizzeclone.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -63,9 +64,7 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if ( task.isSuccessful() ){
-
-                    //abrirTelaPrincipal();
-
+                    abrirTelaPrincipal();
                 }else {
 
                     String exception = "";
@@ -86,5 +85,9 @@ public class SignInActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    public void abrirTelaPrincipal(){
+        startActivity(new Intent(this,PrincipalActivity.class));
+        finish();
     }
 }
