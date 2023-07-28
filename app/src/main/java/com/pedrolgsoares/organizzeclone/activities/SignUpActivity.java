@@ -59,11 +59,11 @@ public class SignUpActivity extends AppCompatActivity {
             usuario.setNome(name);
             usuario.setEmail(email);
             usuario.setSenha(password);
-            signUpUser(name,email,password);
+            signUpUser();
         }
 
     }
-    public void signUpUser(String name,String email,String password){
+    public void signUpUser(){
         firebaseAuth = ConfiguracaoFirebase.getAutenticacao();
         firebaseAuth.createUserWithEmailAndPassword(
                 usuario.getEmail(), usuario.getSenha()
