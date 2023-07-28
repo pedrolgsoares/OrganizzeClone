@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/design_default_color_background"
     tools:context=".activities.SignUpActivity">
 
     <TextView
@@ -96,6 +97,7 @@
         android:layout_marginBottom="8dp"
         android:background="@color/colorPrimary"
         android:text="Cadastre-se"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

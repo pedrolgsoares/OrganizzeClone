@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/design_default_color_background"
     tools:context=".activities.SignInActivity">
 
     <TextView
@@ -37,8 +38,8 @@
         android:drawableLeft="@drawable/baseline_person_24"
         android:drawablePadding="5dp"
         android:ems="10"
+        android:hint="Name"
         android:inputType="text"
-        android:text="Name"
         android:textColor="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@+id/passwordText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,6 +76,7 @@
         android:layout_marginBottom="8dp"
         android:background="@color/colorPrimary"
         android:text="Entrar na conta"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
