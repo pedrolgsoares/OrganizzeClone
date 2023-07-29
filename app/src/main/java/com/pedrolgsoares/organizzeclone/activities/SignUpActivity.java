@@ -71,8 +71,8 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(SignUpActivity.this,"Sucesso ao cadastrar usuário !",Toast.LENGTH_SHORT).show();
-
+                    //Toast.makeText(SignUpActivity.this,"Sucesso ao cadastrar usuário !",Toast.LENGTH_SHORT).show();
+                    finish();
                 }else {
                     String exception = "";
                     try{

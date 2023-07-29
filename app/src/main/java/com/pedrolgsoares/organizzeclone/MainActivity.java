@@ -1,16 +1,19 @@
 package com.pedrolgsoares.organizzeclone;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
+import com.pedrolgsoares.organizzeclone.activities.PrincipalActivity;
 import com.pedrolgsoares.organizzeclone.activities.SignInActivity;
 import com.pedrolgsoares.organizzeclone.activities.SignUpActivity;
+import com.pedrolgsoares.organizzeclone.config.ConfiguracaoFirebase;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends IntroActivity {
-
+    private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +38,7 @@ public class MainActivity extends IntroActivity {
                     .build());
         */
         // Com fragmente
+
         setButtonBackVisible(false);
         setButtonNextVisible(false);
         addSlide(new FragmentSlide.Builder()
@@ -60,6 +64,13 @@ public class MainActivity extends IntroActivity {
                 .build());
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkUserLoged();
+    }
+
     public void btSignUp(View view) {
         //iniciar activity de cadastro
         startActivity(new Intent(this, SignUpActivity.class));
@@ -67,5 +78,15 @@ public class MainActivity extends IntroActivity {
     public  void btSignIn(View view){
         startActivity(new Intent(this, SignInActivity.class));
 
+    }
+    public void checkUserLoged(){
+        firebaseAuth = ConfiguracaoFirebase.getAutenticacao();
+        // firebaseAuth.signOut();
+        if(firebaseAuth.getCurrentUser() != null){
+            abrirTelaPrincipal();
+        }
+    }
+    public void abrirTelaPrincipal(){
+        startActivity(new Intent(this, PrincipalActivity.class));
     }
 }
