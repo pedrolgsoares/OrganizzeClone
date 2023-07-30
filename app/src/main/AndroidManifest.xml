@@ -13,6 +13,14 @@
         android:theme="@style/Theme.OrganizzeClone"
         tools:targetApi="31">
         <activity
+            android:name=".activities.IncomeActivity"
+            android:exported="false"
+            android:theme="@style/receitaTheme" />
+        <activity
+            android:name=".activities.OutGoingActivity"
+            android:exported="false"
+            android:theme="@style/despesaTheme"/>
+        <activity
             android:name=".activities.PrincipalActivity"
             android:exported="false" />
         <activity
@@ -20,9 +28,6 @@
             android:exported="false" />
         <activity
             android:name=".activities.SignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

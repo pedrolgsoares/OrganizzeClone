@@ -2,6 +2,7 @@ package com.pedrolgsoares.organizzeclone.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -56,4 +57,11 @@ public class PrincipalActivity extends AppCompatActivity {
             }
         });
     }
+    public void abreReceitas(View view){
+        startActivity(new Intent(this, IncomeActivity.class));
+    }
+    public void abreDespesas(View view){
+        startActivity(new Intent(this, OutGoingActivity.class));
+    }
+
 }
