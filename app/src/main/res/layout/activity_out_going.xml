@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/ETTotalValue"
+            android:id="@+id/eTTotalValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -49,7 +49,7 @@
         app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/TiedtData"
+            android:id="@+id/tiedtData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Ex: 10/10/2000"
@@ -70,7 +70,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/TiedtCategoria"
+            android:id="@+id/tiedtCategoria"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Ex: Cartão" />
@@ -89,7 +89,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/TiedtDescricao"
+            android:id="@+id/tiedtDescricao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Ex: Cartão" />
