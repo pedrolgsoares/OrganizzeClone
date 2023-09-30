@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.pedrolgsoares.organizzeclone.R;
 import com.pedrolgsoares.organizzeclone.config.ConfiguracaoFirebase;
+import com.pedrolgsoares.organizzeclone.helper.Base64Custom;
 import com.pedrolgsoares.organizzeclone.model.Usuario;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -72,7 +73,9 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     //Toast.makeText(SignUpActivity.this,"Sucesso ao cadastrar usuário !",Toast.LENGTH_SHORT).show();
-
+                    String idUsuario = Base64Custom.codificarBase64(usuario.getEmail());
+                    usuario.setIdUsuario(idUsuario);
+                    usuario.salvar();
                     finish();
                 }else {
                     String exception = "";

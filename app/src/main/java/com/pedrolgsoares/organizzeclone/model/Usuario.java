@@ -1,5 +1,9 @@
 package com.pedrolgsoares.organizzeclone.model;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
+import com.pedrolgsoares.organizzeclone.config.ConfiguracaoFirebase;
+
 public class Usuario {
     private String idUsuario;
     private String nome;
@@ -12,7 +16,13 @@ public class Usuario {
 
     public Usuario() {
     }
-
+    public void salvar(){
+        DatabaseReference firebase = ConfiguracaoFirebase.getFirebaseDatabase();
+        firebase.child("usuarios")
+                .child(this.idUsuario)
+                .setValue(this);
+    }
+    @Exclude
     public String getIdUsuario() {
         return idUsuario;
     }
@@ -32,7 +42,7 @@ public class Usuario {
     public void setEmail(String email) {
         this.email = email;
     }
-
+    @Exclude
     public String getSenha() {
         return senha;
     }
