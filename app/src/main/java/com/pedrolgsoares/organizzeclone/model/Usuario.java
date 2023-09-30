@@ -1,6 +1,7 @@
 package com.pedrolgsoares.organizzeclone.model;
 
 public class Usuario {
+    private String idUsuario;
     private String nome;
     private String email;
     private String senha;
@@ -10,6 +11,14 @@ public class Usuario {
     }
 
     public Usuario() {
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public void setNome(String nome) {
