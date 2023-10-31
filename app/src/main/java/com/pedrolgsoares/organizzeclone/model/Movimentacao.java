@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.pedrolgsoares.organizzeclone.config.ConfiguracaoFirebase;
 import com.pedrolgsoares.organizzeclone.helper.Base64Custom;
+import com.pedrolgsoares.organizzeclone.helper.DataCustom;
 
 public class Movimentacao {
     private String categoria;
@@ -17,13 +18,14 @@ public class Movimentacao {
     public Movimentacao() {
     }
 
-    public void salvar(){
+    public void salvar(String data){
         FirebaseAuth autenticacao = ConfiguracaoFirebase.getAutenticacao(); // realiza a comunicação
         String idUsuario = Base64Custom.codificarBase64( autenticacao.getCurrentUser().getEmail() );
+        String mesAno = DataCustom.getMesAno( data );
         DatabaseReference firebase = ConfiguracaoFirebase.getFirebaseDatabase();
         firebase.child("movimentacao")
                 .child(idUsuario)
-                .child("032023")
+                .child(mesAno)
                 .push()
                 .setValue(this);
     }

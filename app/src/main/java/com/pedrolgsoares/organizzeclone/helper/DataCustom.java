@@ -11,4 +11,12 @@ public class DataCustom {
         String dataAtual = simpleDateFormat.format(dataSistema);
         return dataAtual;
     }
+    public static String getMesAno(String data){
+        String retornoData[] = data.split("/");
+        //String dia = retornoData[0];//dia 23
+        String mes = retornoData[1];//mes 01
+        String ano = retornoData[2];//ano 2018
+        String mesAno = mes + ano;
+        return mesAno;
+    }
 }
