@@ -42,7 +42,7 @@ public class OutGoingActivity extends AppCompatActivity {
                 String categoria = tiedtCategoria.getText().toString();
                 String descricao = tiedtDescricao.getText().toString();
                 validaCampo(valor,data,categoria,descricao);
-                Toast.makeText(OutGoingActivity.this,"Despesa adicionada a lista!",Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -76,7 +76,9 @@ public class OutGoingActivity extends AppCompatActivity {
             movimentacao.setDescricao(tiedtDescricao.getText().toString());
             movimentacao.setTipo("d");
             movimentacao.salvar(data);
+            Toast.makeText(OutGoingActivity.this,"Despesa adicionada a lista!",Toast.LENGTH_SHORT).show();
             return true;
+
         }
     }
 }
