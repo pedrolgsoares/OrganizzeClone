@@ -47,7 +47,7 @@ public class OutGoingActivity extends AppCompatActivity {
 
         // configurando a data atual
         tiedtData.setText(DataCustom.getDataAtual());
-        //recupeDespTotal();
+        recupeDespTotal();
 
         // clique para incluir despesas
         fabSalvar.setOnClickListener(new View.OnClickListener() {
@@ -83,11 +83,15 @@ public class OutGoingActivity extends AppCompatActivity {
         }
         else{
             movimentacao = new Movimentacao();
-            movimentacao.setValor(Double.parseDouble(valor));
+            Double valorEntrada = Double.parseDouble(valor);
+            movimentacao.setValor(valorEntrada);
             movimentacao.setData(dat);
             movimentacao.setCategoria(cate);
             movimentacao.setDescricao(descr);
             movimentacao.setTipo("d");
+            // valor para atualizacao da despesaTotal(apos) = despesatotal(atualmente) + valor
+            Double valorParaAtualizar = despesaT + valorEntrada;
+            atualizarDespesaTotal( valorParaAtualizar );
             movimentacao.salvar(dat);
             Toast.makeText(OutGoingActivity.this,"Despesa adicionada a lista!",Toast.LENGTH_SHORT).show();
             return true;
@@ -117,5 +121,14 @@ public class OutGoingActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public void atualizarDespesaTotal( Double valorParaAtt){
+        // acessa email do usuário para converter e entrar no nó seguindo a regra do firebase
+        String email = firebaseAuth.getCurrentUser().getEmail();
+        String idEmail = Base64Custom.codificarBase64(email);
+
+        // acessa nó
+        DatabaseReference dbrUsuario = databaseReference.child("usuarios").child(idEmail);
+        dbrUsuario.child("despesaTotal").setValue(valorParaAtt);
     }
 }
