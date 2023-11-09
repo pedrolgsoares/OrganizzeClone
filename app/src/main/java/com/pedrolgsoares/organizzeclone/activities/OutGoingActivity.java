@@ -47,7 +47,7 @@ public class OutGoingActivity extends AppCompatActivity {
 
         // configurando a data atual
         tiedtData.setText(DataCustom.getDataAtual());
-        recupeDespTotal();
+        //recupeDespTotal();
 
         // clique para incluir despesas
         fabSalvar.setOnClickListener(new View.OnClickListener() {
@@ -84,14 +84,11 @@ public class OutGoingActivity extends AppCompatActivity {
         else{
             movimentacao = new Movimentacao();
             movimentacao.setValor(Double.parseDouble(valor));
-
-            String data = tiedtData.getText().toString();
-            movimentacao.setData(data);
-
-            movimentacao.setCategoria(tiedtCategoria.getText().toString());
-            movimentacao.setDescricao(tiedtDescricao.getText().toString());
+            movimentacao.setData(dat);
+            movimentacao.setCategoria(cate);
+            movimentacao.setDescricao(descr);
             movimentacao.setTipo("d");
-            movimentacao.salvar(data);
+            movimentacao.salvar(dat);
             Toast.makeText(OutGoingActivity.this,"Despesa adicionada a lista!",Toast.LENGTH_SHORT).show();
             return true;
 
