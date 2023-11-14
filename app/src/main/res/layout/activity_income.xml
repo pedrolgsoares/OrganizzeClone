@@ -49,6 +49,7 @@
         app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiedtData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Ex: 10/10/2000"
@@ -69,6 +70,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiedtCategoria"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Ex: Cartão" />
@@ -87,6 +89,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiedtDescricao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Ex: Cartão" />

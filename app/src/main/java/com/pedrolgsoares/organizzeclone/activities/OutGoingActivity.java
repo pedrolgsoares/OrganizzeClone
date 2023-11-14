@@ -33,7 +33,6 @@ public class OutGoingActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getAutenticacao();
     // variavel da despesa total
     private Double despesaT;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,8 +57,6 @@ public class OutGoingActivity extends AppCompatActivity {
                 String categoria = tiedtCategoria.getText().toString();
                 String descricao = tiedtDescricao.getText().toString();
                 validaCampo(valor,data,categoria,descricao);
-
-
             }
         });
     }
