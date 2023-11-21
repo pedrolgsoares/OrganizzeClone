@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.OrganizzeClone" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorAccentReceita</item>
     </style>
     <!-- Tema aplicado nas despesas !-->
     <style name="despesaTheme" parent="Theme.AppCompat.Light.NoActionBar">
