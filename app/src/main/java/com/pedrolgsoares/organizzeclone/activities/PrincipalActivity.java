@@ -11,11 +11,16 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.pedrolgsoares.organizzeclone.R;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 public class PrincipalActivity extends AppCompatActivity {
     private FloatingActionButton morefab, incomefab,outgoingfab;
     private TextView despesastext,receitastext;
     private Boolean isAllFabsVisible;
+    // calendario
+    private MaterialCalendarView calendarView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +42,9 @@ public class PrincipalActivity extends AppCompatActivity {
 
         isAllFabsVisible = false;
 
+        //Calendario
+        calendarView = findViewById(R.id.calendarView);
+        setupCalendario();
 
         morefab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +70,18 @@ public class PrincipalActivity extends AppCompatActivity {
     }
     public void abreDespesas(View view){
         startActivity(new Intent(this, OutGoingActivity.class));
+    }
+    public void setupCalendario(){
+        CharSequence charSequence[] = {"Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"};
+        calendarView.setTitleMonths(charSequence);
+
+        // Exibir automaticamente o array contendo os valores
+        calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @Override
+            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+
+            }
+        });
     }
 
 }

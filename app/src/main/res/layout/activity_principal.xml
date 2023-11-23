@@ -84,23 +84,31 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="1dp">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
+
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/eTSaudacao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Carregando ..."
             android:textAlignment="center"
             android:textColor="#FEFEFE"
-            android:textSize="34sp" />
+            android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/eTValorGeral"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="R$ 0,00"
             android:textAlignment="center"
             android:textColor="#FEFEFE"
-            android:textSize="48sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textView14"
@@ -110,6 +118,7 @@
             android:textAlignment="center"
             android:textColor="#FEFEFE"
             android:textSize="20sp" />
+
     </LinearLayout>
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
@@ -123,6 +132,7 @@
         tools:layout_editor_absoluteX="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvValores"
         android:layout_width="0dp"
         android:layout_height="267dp"
         app:layout_constraintBottom_toBottomOf="parent"
