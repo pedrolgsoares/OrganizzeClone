@@ -1,16 +1,23 @@
 package com.pedrolgsoares.organizzeclone.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.pedrolgsoares.organizzeclone.MainActivity;
 import com.pedrolgsoares.organizzeclone.R;
+import com.pedrolgsoares.organizzeclone.config.ConfiguracaoFirebase;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
@@ -21,6 +28,9 @@ public class PrincipalActivity extends AppCompatActivity {
     private Boolean isAllFabsVisible;
     // calendario
     private MaterialCalendarView calendarView;
+
+    private Toolbar toolbar;
+    private FirebaseAuth autenticacao = ConfiguracaoFirebase.getAutenticacao();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +51,9 @@ public class PrincipalActivity extends AppCompatActivity {
         receitastext.setVisibility(View.GONE);
 
         isAllFabsVisible = false;
+        //Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         //Calendario
         calendarView = findViewById(R.id.calendarView);
@@ -84,4 +97,19 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_principal,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menuSair){
+            autenticacao.signOut();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
