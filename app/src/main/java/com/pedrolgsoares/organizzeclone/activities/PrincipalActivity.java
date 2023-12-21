@@ -53,6 +53,7 @@ public class PrincipalActivity extends AppCompatActivity {
         isAllFabsVisible = false;
         //Toolbar
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         //Calendario
