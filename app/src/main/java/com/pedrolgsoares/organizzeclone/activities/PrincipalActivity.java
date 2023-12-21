@@ -15,22 +15,33 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.pedrolgsoares.organizzeclone.MainActivity;
 import com.pedrolgsoares.organizzeclone.R;
 import com.pedrolgsoares.organizzeclone.config.ConfiguracaoFirebase;
+import com.pedrolgsoares.organizzeclone.helper.Base64Custom;
+import com.pedrolgsoares.organizzeclone.model.Usuario;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
+import java.text.DecimalFormat;
+
 public class PrincipalActivity extends AppCompatActivity {
     private FloatingActionButton morefab, incomefab,outgoingfab;
-    private TextView despesastext,receitastext;
+    private TextView despesastext,receitastext,eTSaudacao,eTValorGeral;
     private Boolean isAllFabsVisible;
     // calendario
     private MaterialCalendarView calendarView;
-
     private Toolbar toolbar;
-    private FirebaseAuth autenticacao = ConfiguracaoFirebase.getAutenticacao();
+    private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getAutenticacao();
+    private DatabaseReference databaseReference = ConfiguracaoFirebase.getFirebaseDatabase();
+    private Double despesaTotal = 0.0;
+    private Double receitaTotal = 0.0;
+    private Double valorGeral = 0.00;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +71,10 @@ public class PrincipalActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         setupCalendario();
 
+        //Campos das informações
+        eTSaudacao = findViewById(R.id.eTSaudacao);
+        eTValorGeral = findViewById(R.id.eTValorGeral);
+        getInfo();
         morefab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +113,36 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
+    public void getInfo(){
+        // acessa email do usuário para converter e entrar no nó seguindo a regra do firebase
+        String email = firebaseAuth.getCurrentUser().getEmail();
+        String idEmail = Base64Custom.codificarBase64(email);
+
+        // acessa nó
+        DatabaseReference dbrUsuario = databaseReference.child("usuarios").child(idEmail);
+
+        dbrUsuario.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                Usuario usuario = snapshot.getValue(Usuario.class); // tenho acesso ao json do objeto usuario
+
+                eTSaudacao.setText("Olá, "+usuario.getNome());
+                despesaTotal = usuario.getDespesaTotal();
+                receitaTotal = usuario.getReceitaTotal();
+                valorGeral = receitaTotal - despesaTotal;
+                // Formato decimal de texto
+                DecimalFormat decimalFormat = new DecimalFormat("0.00");
+                String resultado = decimalFormat.format(valorGeral);
+                eTValorGeral.setText(resultado);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_principal,menu);
@@ -107,7 +152,7 @@ public class PrincipalActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menuSair){
-            autenticacao.signOut();
+            firebaseAuth.signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
