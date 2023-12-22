@@ -133,7 +133,7 @@
         tools:layout_editor_absoluteX="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvValores"
+        android:id="@+id/recyclerViewMovi"
         android:layout_width="0dp"
         android:layout_height="267dp"
         app:layout_constraintBottom_toBottomOf="parent"

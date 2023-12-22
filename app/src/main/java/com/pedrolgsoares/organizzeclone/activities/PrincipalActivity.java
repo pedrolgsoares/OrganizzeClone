@@ -3,6 +3,8 @@ package com.pedrolgsoares.organizzeclone.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,14 +23,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.pedrolgsoares.organizzeclone.MainActivity;
 import com.pedrolgsoares.organizzeclone.R;
+import com.pedrolgsoares.organizzeclone.adapter.MovimentacaoAdapter;
 import com.pedrolgsoares.organizzeclone.config.ConfiguracaoFirebase;
 import com.pedrolgsoares.organizzeclone.helper.Base64Custom;
+import com.pedrolgsoares.organizzeclone.model.Movimentacao;
 import com.pedrolgsoares.organizzeclone.model.Usuario;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrincipalActivity extends AppCompatActivity {
     private FloatingActionButton morefab, incomefab,outgoingfab;
@@ -42,6 +48,9 @@ public class PrincipalActivity extends AppCompatActivity {
     private Double despesaTotal = 0.0;
     private Double receitaTotal = 0.0;
     private Double valorGeral = 0.00;
+    private RecyclerView recyclerView;
+    private MovimentacaoAdapter movimentacaoAdapter;
+    private List<Movimentacao> movimentacaoList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +84,16 @@ public class PrincipalActivity extends AppCompatActivity {
         eTSaudacao = findViewById(R.id.eTSaudacao);
         eTValorGeral = findViewById(R.id.eTValorGeral);
         getInfo();
+
+        //Configurando o adapter e o recyclerview
+        recyclerView = findViewById(R.id.recyclerViewMovi);
+        //Configurar Adapter
+        movimentacaoAdapter = new MovimentacaoAdapter(movimentacaoList,this);
+        //Configurar RecyclerView
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(movimentacaoAdapter);
         morefab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
