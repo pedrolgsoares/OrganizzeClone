@@ -29,6 +29,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.text.DecimalFormat;
+import java.util.EventListener;
 
 public class PrincipalActivity extends AppCompatActivity {
     private FloatingActionButton morefab, incomefab,outgoingfab;
@@ -39,6 +40,9 @@ public class PrincipalActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getAutenticacao();
     private DatabaseReference databaseReference = ConfiguracaoFirebase.getFirebaseDatabase();
+    // mudando os eventlistiner
+    private DatabaseReference dbrUsuario;
+    private ValueEventListener valueEventListener;
     private Double despesaTotal = 0.0;
     private Double receitaTotal = 0.0;
     private Double valorGeral = 0.00;
@@ -74,7 +78,7 @@ public class PrincipalActivity extends AppCompatActivity {
         //Campos das informações
         eTSaudacao = findViewById(R.id.eTSaudacao);
         eTValorGeral = findViewById(R.id.eTValorGeral);
-        getInfo();
+
         morefab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +98,13 @@ public class PrincipalActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getInfo();
+    }
+
     public void abreReceitas(View view){
         startActivity(new Intent(this, IncomeActivity.class));
     }
@@ -119,9 +130,9 @@ public class PrincipalActivity extends AppCompatActivity {
         String idEmail = Base64Custom.codificarBase64(email);
 
         // acessa nó
-        DatabaseReference dbrUsuario = databaseReference.child("usuarios").child(idEmail);
+        dbrUsuario = databaseReference.child("usuarios").child(idEmail);
 
-        dbrUsuario.addValueEventListener(new ValueEventListener() {
+        valueEventListener = dbrUsuario.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -157,5 +168,10 @@ public class PrincipalActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        dbrUsuario.removeEventListener(valueEventListener);
     }
 }
