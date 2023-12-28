@@ -8,14 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,13 +47,17 @@ public class PrincipalActivity extends AppCompatActivity {
     private DatabaseReference databaseReference = ConfiguracaoFirebase.getFirebaseDatabase();
     // mudando os eventlistiner
     private DatabaseReference dbrUsuario;
-    private ValueEventListener valueEventListener;
+    private ValueEventListener valueEventListenerUsuario;
     private Double despesaTotal = 0.0;
     private Double receitaTotal = 0.0;
     private Double valorGeral = 0.00;
+
     private RecyclerView recyclerView;
     private MovimentacaoAdapter movimentacaoAdapter;
     private List<Movimentacao> movimentacaoList = new ArrayList<>();
+    private String mes;
+    private DatabaseReference dbrMovimentacao;
+    private ValueEventListener valueEventListenerMovimentacao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,27 +123,24 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getInfo();
-    }
-
     public void abreReceitas(View view){
         startActivity(new Intent(this, IncomeActivity.class));
     }
+
     public void abreDespesas(View view){
         startActivity(new Intent(this, OutGoingActivity.class));
     }
-    public void setupCalendario(){
-        CharSequence charSequence[] = {"Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"};
-        calendarView.setTitleMonths(charSequence);
 
-        // Exibir automaticamente o array contendo os valores
+    public void setupCalendario(){
+        CharSequence charSequence[] = {"Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"};  // Exibir automaticamente o array contendo os valores
+        calendarView.setTitleMonths(charSequence);
+        CalendarDay calendarDay = calendarView.getCurrentDate(); // atual
+        mes = String.valueOf(calendarDay.getMonth()+1 +"" + calendarDay.getYear()); // converte o atual em string
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-
+                mes = String.valueOf(date.getMonth()+1 +"" + date.getYear()); // converte agora quando é clicado para o próximo ou anterior
+                Log.i("MES SELECIONADO","mes: "+mes);
             }
         });
     }
@@ -153,7 +153,7 @@ public class PrincipalActivity extends AppCompatActivity {
         // acessa nó
         dbrUsuario = databaseReference.child("usuarios").child(idEmail);
 
-        valueEventListener = dbrUsuario.addValueEventListener(new ValueEventListener() {
+        valueEventListenerUsuario = dbrUsuario.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -175,6 +175,31 @@ public class PrincipalActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void getDadosValores(){
+        // acessa email do usuário para converter e entrar no nó seguindo a regra do firebase
+        String email = firebaseAuth.getCurrentUser().getEmail();
+        String idEmail = Base64Custom.codificarBase64(email);
+        dbrMovimentacao = databaseReference.child("movimentacao").child(idEmail).child(mes);
+
+        valueEventListenerMovimentacao = dbrMovimentacao.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                movimentacaoList.clear();
+                for (DataSnapshot dados: snapshot.getChildren() ){
+
+                    Log.i("MOVIMENTAÇÕES:","DADOS: "+dados.toString());
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_principal,menu);
@@ -190,9 +215,18 @@ public class PrincipalActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getInfo();
+        getDadosValores();
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
-        dbrUsuario.removeEventListener(valueEventListener);
+        dbrUsuario.removeEventListener(valueEventListenerUsuario);
+        dbrMovimentacao.removeEventListener(valueEventListenerMovimentacao);
     }
 }
