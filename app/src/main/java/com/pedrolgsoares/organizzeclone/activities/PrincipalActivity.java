@@ -91,8 +91,6 @@ public class PrincipalActivity extends AppCompatActivity {
         eTSaudacao = findViewById(R.id.eTSaudacao);
         eTValorGeral = findViewById(R.id.eTValorGeral);
 
-        getInfo();
-
         //Configurando o adapter e o recyclerview
         recyclerView = findViewById(R.id.recyclerViewMovi);
         //Configurar Adapter
@@ -135,12 +133,18 @@ public class PrincipalActivity extends AppCompatActivity {
         CharSequence charSequence[] = {"Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"};  // Exibir automaticamente o array contendo os valores
         calendarView.setTitleMonths(charSequence);
         CalendarDay calendarDay = calendarView.getCurrentDate(); // atual
-        mes = String.valueOf(calendarDay.getMonth()+1 +"" + calendarDay.getYear()); // converte o atual em string
+        String mesEscolhido =  String.format("%02d",(calendarDay.getMonth() + 1));
+
+        mes = String.valueOf(mesEscolhido +"" + calendarDay.getYear()); // converte o atual em string
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                mes = String.valueOf(date.getMonth()+1 +"" + date.getYear()); // converte agora quando é clicado para o próximo ou anterior
+                String mesEscolhido =  String.format("%02d",(date.getMonth() + 1));
+                mes = String.valueOf(mesEscolhido +"" + date.getYear()); // converte o atual em string
+
                 Log.i("MES SELECIONADO","mes: "+mes);
+                dbrMovimentacao.removeEventListener(valueEventListenerMovimentacao);
+                getDadosValores();
             }
         });
     }
@@ -184,15 +188,20 @@ public class PrincipalActivity extends AppCompatActivity {
 
         valueEventListenerMovimentacao = dbrMovimentacao.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                movimentacaoList.clear();
-                for (DataSnapshot dados: snapshot.getChildren() ){
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    Log.i("MOVIMENTAÇÕES:","DADOS: "+dados.toString());
+                movimentacaoList.clear();
+                for (DataSnapshot dados: dataSnapshot.getChildren() ){
+
+                    Movimentacao movimentacao = dados.getValue( Movimentacao.class );
+                    Log.i("LOGO DO JSON","AQUI: "+dados.getValue( Movimentacao.class ).getDescricao());
+                    movimentacaoList.add( movimentacao );
 
                 }
-            }
 
+                movimentacaoAdapter.notifyDataSetChanged();
+
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
