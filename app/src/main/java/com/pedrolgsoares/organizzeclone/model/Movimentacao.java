@@ -12,6 +12,7 @@ public class Movimentacao {
     private String descricao;
     private Double valor;
     private String tipo;
+    private String keyValue;
 
 
 
@@ -67,5 +68,13 @@ public class Movimentacao {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public String getKeyValue() {
+        return keyValue;
+    }
+
+    public void setKeyValue(String keyValue) {
+        this.keyValue = keyValue;
     }
 }

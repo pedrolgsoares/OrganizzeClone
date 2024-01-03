@@ -1,12 +1,14 @@
 package com.pedrolgsoares.organizzeclone.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -59,6 +61,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private String mes;
     private DatabaseReference dbrMovimentacao;
     private ValueEventListener valueEventListenerMovimentacao;
+    private Movimentacao movimentacao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,7 +200,9 @@ public class PrincipalActivity extends AppCompatActivity {
                 for (DataSnapshot dados: dataSnapshot.getChildren() ){
 
                     Movimentacao movimentacao = dados.getValue( Movimentacao.class );
+                    movimentacao.setKeyValue(dados.getKey());
                     Log.i("LOGO DO JSON","AQUI: "+dados.getValue( Movimentacao.class ).getDescricao());
+                    Log.i("LOGO DO JSON","KEYVALUE: "+movimentacao.getKeyValue());
                     movimentacaoList.add( movimentacao );
 
                 }
@@ -223,9 +228,42 @@ public class PrincipalActivity extends AppCompatActivity {
            @Override
            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 Log.i("DESLIZAR: ","FOI");
+               deleteMovi(viewHolder);
            }
        };
        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
+
+    }
+    public void deleteMovi(RecyclerView.ViewHolder viewHolder){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setMessage("TESTE").setTitle("TESTE2");
+
+        alertDialog.setPositiveButton("Excluir", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // captura a posição do item
+                int posicacoItem = viewHolder.getAdapterPosition();
+                movimentacao = movimentacaoList.get(posicacoItem);
+                Log.i("PEGUEI AQUI",movimentacao.getKeyValue());
+
+                // acessa email do usuário para converter e entrar no nó seguindo a regra do firebase
+                String email = firebaseAuth.getCurrentUser().getEmail();
+                String idEmail = Base64Custom.codificarBase64(email);
+                dbrMovimentacao = databaseReference.child("movimentacao").child(idEmail).child(mes);
+
+                dbrMovimentacao.child(movimentacao.getKeyValue()).removeValue();
+                movimentacaoAdapter.notifyItemRemoved(posicacoItem);
+
+            }
+        });
+        alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                movimentacaoAdapter.notifyDataSetChanged();
+
+            }
+        });
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
 
     }
 
