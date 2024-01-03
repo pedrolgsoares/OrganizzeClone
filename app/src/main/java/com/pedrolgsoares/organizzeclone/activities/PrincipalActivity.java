@@ -3,6 +3,7 @@ package com.pedrolgsoares.organizzeclone.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -100,6 +101,8 @@ public class PrincipalActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(movimentacaoAdapter);
+
+        swipe();
 
         morefab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,6 +210,23 @@ public class PrincipalActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public void swipe(){
+        int dragDirs = ItemTouchHelper.ACTION_STATE_IDLE;
+        int swipeDirs = ItemTouchHelper.START | ItemTouchHelper.END;
+       ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(dragDirs,swipeDirs) {
+           @Override
+           public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+               return false;
+           }
+
+           @Override
+           public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Log.i("DESLIZAR: ","FOI");
+           }
+       };
+       new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
+
     }
 
     @Override
