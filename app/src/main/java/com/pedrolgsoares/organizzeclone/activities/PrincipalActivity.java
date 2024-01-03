@@ -43,12 +43,12 @@ public class PrincipalActivity extends AppCompatActivity {
     private FloatingActionButton morefab, incomefab,outgoingfab;
     private TextView despesastext,receitastext,eTSaudacao,eTValorGeral;
     private Boolean isAllFabsVisible;
-    // calendario
+
     private MaterialCalendarView calendarView;
     private Toolbar toolbar;
     private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getAutenticacao();
     private DatabaseReference databaseReference = ConfiguracaoFirebase.getFirebaseDatabase();
-    // mudando os eventlistiner
+
     private DatabaseReference dbrUsuario;
     private ValueEventListener valueEventListenerUsuario;
     private Double despesaTotal = 0.0;
@@ -82,24 +82,22 @@ public class PrincipalActivity extends AppCompatActivity {
         receitastext.setVisibility(View.GONE);
 
         isAllFabsVisible = false;
-        //Toolbar
+
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        //Calendario
         calendarView = findViewById(R.id.calendarView);
         setupCalendario();
 
-        //Campos das informações
         eTSaudacao = findViewById(R.id.eTSaudacao);
         eTValorGeral = findViewById(R.id.eTValorGeral);
 
-        //Configurando o adapter e o recyclerview
+
         recyclerView = findViewById(R.id.recyclerViewMovi);
-        //Configurar Adapter
+
         movimentacaoAdapter = new MovimentacaoAdapter(movimentacaoList,this);
-        //Configurar RecyclerView
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -201,8 +199,6 @@ public class PrincipalActivity extends AppCompatActivity {
 
                     Movimentacao movimentacao = dados.getValue( Movimentacao.class );
                     movimentacao.setKeyValue(dados.getKey());
-                    Log.i("LOGO DO JSON","AQUI: "+dados.getValue( Movimentacao.class ).getDescricao());
-                    Log.i("LOGO DO JSON","KEYVALUE: "+movimentacao.getKeyValue());
                     movimentacaoList.add( movimentacao );
 
                 }
@@ -216,6 +212,7 @@ public class PrincipalActivity extends AppCompatActivity {
             }
         });
     }
+
     public void swipe(){
         int dragDirs = ItemTouchHelper.ACTION_STATE_IDLE;
         int swipeDirs = ItemTouchHelper.START | ItemTouchHelper.END;
@@ -234,6 +231,7 @@ public class PrincipalActivity extends AppCompatActivity {
        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
 
     }
+
     public void deleteMovi(RecyclerView.ViewHolder viewHolder){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setMessage("TESTE").setTitle("TESTE2");
@@ -252,7 +250,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
                 dbrMovimentacao.child(movimentacao.getKeyValue()).removeValue();
                 movimentacaoAdapter.notifyItemRemoved(posicacoItem);
-
+                atualizaSaldo();
             }
         });
         alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -266,6 +264,7 @@ public class PrincipalActivity extends AppCompatActivity {
         dialog.show();
 
     }
+
     public void atualizaSaldo(){
         // acessa email do usuário para converter e entrar no nó seguindo a regra do firebase
         String email = firebaseAuth.getCurrentUser().getEmail();
