@@ -40,8 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrincipalActivity extends AppCompatActivity {
-    private FloatingActionButton morefab, incomefab,outgoingfab;
-    private TextView despesastext,receitastext,eTSaudacao,eTValorGeral;
+    private FloatingActionButton morefab, incomefab, outgoingfab;
+    private TextView despesastext, receitastext, eTSaudacao, eTValorGeral;
     private Boolean isAllFabsVisible;
 
     private MaterialCalendarView calendarView;
@@ -49,19 +49,17 @@ public class PrincipalActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getAutenticacao();
     private DatabaseReference databaseReference = ConfiguracaoFirebase.getFirebaseDatabase();
 
-    private DatabaseReference dbrUsuario;
-    private ValueEventListener valueEventListenerUsuario;
-    private Double despesaTotal = 0.0;
-    private Double receitaTotal = 0.0;
-    private Double valorGeral = 0.00;
+    private DatabaseReference dbrUsuario,dbrMovimentacao;
+    private ValueEventListener valueEventListenerUsuario, valueEventListenerMovimentacao;
+    private Double despesaTotal, receitaTotal, valorGeral = 0.0;
 
     private RecyclerView recyclerView;
     private MovimentacaoAdapter movimentacaoAdapter;
     private List<Movimentacao> movimentacaoList = new ArrayList<>();
     private String mes;
-    private DatabaseReference dbrMovimentacao;
-    private ValueEventListener valueEventListenerMovimentacao;
+
     private Movimentacao movimentacao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +71,6 @@ public class PrincipalActivity extends AppCompatActivity {
 
         despesastext = findViewById(R.id.despesastext);
         receitastext = findViewById(R.id.receitastext);
-
 
         incomefab.setVisibility(View.GONE);
         outgoingfab.setVisibility(View.GONE);
@@ -92,7 +89,6 @@ public class PrincipalActivity extends AppCompatActivity {
 
         eTSaudacao = findViewById(R.id.eTSaudacao);
         eTValorGeral = findViewById(R.id.eTValorGeral);
-
 
         recyclerView = findViewById(R.id.recyclerViewMovi);
 
