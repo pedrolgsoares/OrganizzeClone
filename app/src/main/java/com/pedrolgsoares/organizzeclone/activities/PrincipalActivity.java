@@ -266,6 +266,23 @@ public class PrincipalActivity extends AppCompatActivity {
         dialog.show();
 
     }
+    public void atualizaSaldo(){
+        // acessa email do usuário para converter e entrar no nó seguindo a regra do firebase
+        String email = firebaseAuth.getCurrentUser().getEmail();
+        String idEmail = Base64Custom.codificarBase64(email);
+
+        // acessa nó
+        dbrUsuario = databaseReference.child("usuarios").child(idEmail);
+
+        if (movimentacao.getTipo().equals("r")){
+            receitaTotal = receitaTotal - movimentacao.getValor();
+            dbrUsuario.child("receitaTotal").setValue(receitaTotal);
+        }
+        if (movimentacao.getTipo().equals("d")){
+            despesaTotal = despesaTotal - movimentacao.getValor();
+            dbrUsuario.child("despesaTotal").setValue(despesaTotal);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
